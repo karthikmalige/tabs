@@ -1,0 +1,40 @@
+import React, { useState,useEffect } from 'react';
+import { FaAngleDoubleRight } from 'react-icons/fa'
+
+const url ='https://course-api.com/react-tabs-project';
+
+const App = () => {
+  const [ loading, setLoading ] = useState(true);
+  const [ job , setJob ]= useState([]);
+ const [value, setValue]= useState(0);
+ const fetchlike = async() => {
+   const response = await fetch(url)
+   const  newjob = await  response.json()
+   setJob(newjob)
+   setLoading(false)
+ }
+ useEffect(()=>{
+   fetchlike()
+ },[])
+if(loading)
+{return(<div>Loading</div>)
+}
+ const {company, dates, duties,title}=job[value]
+ return(<div><h2>Experience</h2>
+ <div>
+ {job.map((item,index)=>{
+   return(
+   <button key={item.id} onClick={()=>setValue(index)}>
+   {item.company}</button>)})}
+   </div>
+ <h3>{title}</h3>
+ <h4>{company}</h4>
+ <p>{dates}</p>
+ {/* <p>{duties}</p> */}
+ {duties.map((duty,index)=>{return(
+   <div key={index}>  <FaAngleDoubleRight className="job-icon" />
+                <p>{duty}</p>
+  </div>)})}
+  </div>)
+  }
+export default App;
